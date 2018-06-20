@@ -30,29 +30,33 @@ namespace FishingPlanetHelper
             label2.Text = "Assembly-Csharp.dll version = " + fileVersion;
         }
 
-        public void CheckDll()
+        bool CheckDll()
         {
             FolderBrowserDialog folderBrowserDialog1 = new FolderBrowserDialog();
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
             {
-                textBox1.Text = GamePath;
-
-                string[] file = Directory.GetFiles(GamePath, "Assembly-CSharp.dll");
+                 string[] file = Directory.GetFiles(folderBrowserDialog1.SelectedPath, "Assembly-CSharp.dll");
 
                 if (file.Length != 0)
                 {
                     label2.Text = "Assembly-Csharp.dll found!";
+                    return true;
                 }
-                else
-                {
-                    label2.Text = "Assembly-Csharp.dll not found!";
-                }
+                label2.Text = "Assembly-Csharp.dll not found!";
             }
+            return false;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            CheckDll();
+            if (CheckDll() == true)
+            {
+                textBox1.Text = "ITS OK";
+            }
+            else
+            {
+                textBox1.Text = "ITS BAAD";
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)
