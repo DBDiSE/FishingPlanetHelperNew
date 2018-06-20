@@ -31,6 +31,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>mono_file_transfer_section_PCF_2.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -81,6 +84,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Assembly-CSharp.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="mono_file_transfer_section_PCF_2.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

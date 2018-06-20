@@ -22,12 +22,27 @@ namespace FishingPlanetHelper
         {
             InitializeComponent();
 
+            button2.Enabled = false;
             textBox1.Text = GamePath;
 
-            var versInfo = FileVersionInfo.GetVersionInfo(DllPath);
+            string[] file = Directory.GetFiles(GamePath, "Assembly-CSharp.dll");
 
-            String fileVersion = versInfo.FileVersion;
-            label2.Text = "Assembly-Csharp.dll version = " + fileVersion;
+            if (file.Length != 0)
+            {
+                var versInfo = FileVersionInfo.GetVersionInfo(DllPath);
+
+                String fileVersion = versInfo.FileVersion;
+                label2.Text = "Assembly-Csharp.dll version = " + fileVersion;
+                if(fileVersion == "0.0.6740.24271")
+                {
+                    button2.Enabled = true;
+                } 
+            }
+            else
+            {
+                label2.Text = "Assembly-Csharp.dll not found or version is not correct!";
+                button2.Enabled = false;
+            }
         }
 
         bool CheckDll()
@@ -35,6 +50,8 @@ namespace FishingPlanetHelper
             FolderBrowserDialog folderBrowserDialog1 = new FolderBrowserDialog();
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
             {
+                textBox1.Text = folderBrowserDialog1.SelectedPath;
+
                 string[] file = Directory.GetFiles(folderBrowserDialog1.SelectedPath, "Assembly-CSharp.dll");
 
                 if (file.Length != 0)
@@ -50,58 +67,44 @@ namespace FishingPlanetHelper
             if (CheckDll() == true)
             {
                 label2.Text = "Assembly-Csharp.dll found!";
+                button2.Enabled = true;
             }
             else
             {
-                label2.Text = "Assembly-Csharp.dll not found!";
+                label2.Text = "Assembly-Csharp.dll not found or version is not correct!";
+                button2.Enabled = false;
             }
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             listBox1.Items.Add("Starting");
 
-            var versInfo = FileVersionInfo.GetVersionInfo("C:\\Program Files (x86)\\Steam\\steamapps\\common\\Fishing Planet\\FishingPlanet_Data\\Managed\\Assembly-CSharp.dll");
+            var versInfo = FileVersionInfo.GetVersionInfo(DllPath);
             String fileVersion = versInfo.FileVersion;
-            listBox1.Items.Add("CSharp.dll version = " + fileVersion);
-            label2.Text = "Csharp.dll FOUND - current version = " + fileVersion;
+            listBox1.Items.Add("Assembly-CSharp.dll version = " + fileVersion);
 
             System.Threading.Thread.Sleep(200);
+
             listBox1.Items.Add("Backup original file");
-            if (File.Exists("C:\\Program Files (x86)\\Steam\\steamapps\\common\\Fishing Planet\\FishingPlanet_Data\\Managed\\Assembly-CSharp.dll.bak"))
+            if (File.Exists(GamePath +".bak"))
             {
-                File.Delete("C:\\Program Files (x86)\\Steam\\steamapps\\common\\Fishing Planet\\FishingPlanet_Data\\Managed\\Assembly-CSharp.dll.bak");
+                File.Delete(GamePath + ".bak");
             }
-            System.IO.File.Move("C:\\Program Files (x86)\\Steam\\steamapps\\common\\Fishing Planet\\FishingPlanet_Data\\Managed\\Assembly-CSharp.dll", "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Fishing Planet\\FishingPlanet_Data\\Managed\\Assembly-CSharp.dll.bak");
+            System.IO.File.Move(DllPath, GamePath + ".bak");
 
             System.Threading.Thread.Sleep(200);
-            listBox1.Items.Add("Copying files..");
-            
 
-            //string[] files = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceNames();
-            //foreach(string element in files)
-            //{
-            //    listBox1.Items.Add(element);
-            //}
+            listBox1.Items.Add("Copying files..");
 
             var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("FishingPlanetHelper.Assembly-CSharp.dll");
-            var fileStream = File.Create("C:\\Program Files (x86)\\Steam\\steamapps\\common\\Fishing Planet\\FishingPlanet_Data\\Managed\\Assembly-CSharp.dll");
+            var fileStream = File.Create(DllPath);
             stream.Seek(0, SeekOrigin.Begin);
             stream.CopyTo(fileStream);
             fileStream.Close();
 
             System.Threading.Thread.Sleep(200);
             listBox1.Items.Add("Done!");
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
