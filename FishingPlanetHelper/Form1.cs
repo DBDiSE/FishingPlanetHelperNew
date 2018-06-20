@@ -15,8 +15,8 @@ namespace FishingPlanetHelper
 {
     public partial class Form1 : Form
     {
-        string GamePath = @"C:\Program Files(x86)\Steam\steamapps\common\Fishing Planet\FishingPlanet_Data\Managed";
-        string DllPath = @"C:\Program Files(x86)\Steam\steamapps\common\Fishing Planet\FishingPlanet_Data\Managed\Assembly-CSharp.dll";
+        string GamePath = @"C:\Program Files (x86)\Steam\steamapps\common\Fishing Planet\FishingPlanet_Data\Managed";
+        string DllPath = @"C:\Program Files (x86)\Steam\steamapps\common\Fishing Planet\FishingPlanet_Data\Managed\Assembly-CSharp.dll";
 
         public Form1()
         {
@@ -24,30 +24,28 @@ namespace FishingPlanetHelper
 
             textBox1.Text = GamePath;
 
-            var versInfo = FileVersionInfo.GetVersionInfo("C:\\Program Files (x86)\\Steam\\steamapps\\common\\Fishing Planet\\FishingPlanet_Data\\Managed\\Assembly-CSharp.dll");
+            var versInfo = FileVersionInfo.GetVersionInfo(DllPath);
+
             String fileVersion = versInfo.FileVersion;
-            label2.Text = "Csharp.dll FOUND = " + fileVersion;
+            label2.Text = "Assembly-Csharp.dll version = " + fileVersion;
         }
 
         public void CheckDll()
         {
-            string Path;
-
             FolderBrowserDialog folderBrowserDialog1 = new FolderBrowserDialog();
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
             {
-                Path = folderBrowserDialog1.SelectedPath + "\\FishingPlanet_Data\\Managed";
-                textBox1.Text = Path;
+                textBox1.Text = GamePath;
 
-                string[] file = Directory.GetFiles(Path, "Assembly-CSharp.dll");
+                string[] file = Directory.GetFiles(GamePath, "Assembly-CSharp.dll");
 
                 if (file.Length != 0)
                 {
-                    label2.Text = "File found!";
+                    label2.Text = "Assembly-Csharp.dll found!";
                 }
                 else
                 {
-                    label2.Text = "File not found!";
+                    label2.Text = "Assembly-Csharp.dll not found!";
                 }
             }
         }
