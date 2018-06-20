@@ -35,14 +35,12 @@ namespace FishingPlanetHelper
             FolderBrowserDialog folderBrowserDialog1 = new FolderBrowserDialog();
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
             {
-                 string[] file = Directory.GetFiles(folderBrowserDialog1.SelectedPath, "Assembly-CSharp.dll");
+                string[] file = Directory.GetFiles(folderBrowserDialog1.SelectedPath, "Assembly-CSharp.dll");
 
                 if (file.Length != 0)
                 {
-                    label2.Text = "Assembly-Csharp.dll found!";
                     return true;
-                }
-                label2.Text = "Assembly-Csharp.dll not found!";
+                }   
             }
             return false;
         }
@@ -51,11 +49,11 @@ namespace FishingPlanetHelper
         {
             if (CheckDll() == true)
             {
-                textBox1.Text = "ITS OK";
+                label2.Text = "Assembly-Csharp.dll found!";
             }
             else
             {
-                textBox1.Text = "ITS BAAD";
+                label2.Text = "Assembly-Csharp.dll not found!";
             }
         }
 
