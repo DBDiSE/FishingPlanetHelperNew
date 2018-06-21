@@ -8,8 +8,11 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
+using NAudio.Wave;
 
 namespace FishingPlanetHelper
 {
@@ -21,6 +24,23 @@ namespace FishingPlanetHelper
         public Form1()
         {
             InitializeComponent();
+
+             ThreadPool.QueueUserWorkItem(
+             delegate (object param)
+             {
+                 MemoryStream mp3file = new MemoryStream(Properties.Resources.mmm);
+                 Mp3FileReader mp3reader = new Mp3FileReader(mp3file);
+
+                 using (var waveOut = new WaveOut(WaveCallbackInfo.FunctionCallback()))
+                 {
+                     waveOut.Init(mp3reader);
+                     waveOut.Play();
+                     while (waveOut.PlaybackState == PlaybackState.Playing)
+                     {
+                         Thread.Sleep(100);
+                     }
+                 }
+             });
 
             button2.Enabled = false;
             textBox1.Text = GamePath;
