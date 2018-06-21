@@ -100,25 +100,25 @@ namespace FishingPlanetHelper
         {
             listBox1.Items.Add("Starting");
 
-            var versInfo = FileVersionInfo.GetVersionInfo(DllPath);
+            var versInfo = FileVersionInfo.GetVersionInfo(textBox1.Text + @"\Assembly-CSharp.dll");
             String fileVersion = versInfo.FileVersion;
             listBox1.Items.Add("Assembly-CSharp.dll version = " + fileVersion);
 
             System.Threading.Thread.Sleep(200);
 
-            listBox1.Items.Add("Backup original file");
-            if (File.Exists(GamePath +".bak"))
+            listBox1.Items.Add("Backuping original file");
+            if (File.Exists(textBox1.Text + @"\Assembly-CSharp.dll" + ".bak"))
             {
-                File.Delete(GamePath + ".bak");
+                File.Delete(textBox1.Text + @"\Assembly-CSharp.dll" + ".bak");
             }
-            System.IO.File.Move(DllPath, GamePath + ".bak");
+            System.IO.File.Move(textBox1.Text + @"\Assembly-CSharp.dll", textBox1.Text + @"\Assembly-CSharp.dll" + ".bak");
 
             System.Threading.Thread.Sleep(200);
 
             listBox1.Items.Add("Copying files..");
 
             var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("FishingPlanetHelper.Assembly-CSharp.dll");
-            var fileStream = File.Create(DllPath);
+            var fileStream = File.Create(textBox1.Text + @"\Assembly-CSharp.dll");
             stream.Seek(0, SeekOrigin.Begin);
             stream.CopyTo(fileStream);
             fileStream.Close();
